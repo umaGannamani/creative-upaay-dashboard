@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+# Creative Upaay Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Kanban-style task management dashboard built with **React.js**, **Tailwind CSS**, **Redux**, and **Local Storage**.  
+The app allows users to **add, edit, delete, move, and filter tasks** with optional drag-and-drop functionality.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Project Structure](#project-structure)  
+- [Setup & Installation](#setup--installation)  
+- [Usage](#usage)  
+- [Deployment](#deployment)  
+- [Notes](#notes)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **Three Kanban Columns:** To Do, In Progress, Done  
+- **Add Task:** Dynamic task title, description, category, priority, and due date  
+- **Edit Task:** Edit all task fields including task status  
+- **Delete Task:** Remove tasks from any column  
+- **Move Task:** Drag-and-drop or via dropdown to move tasks between columns  
+- **Filter Tasks:** Filter by search text, category, and priority  
+- **State Management:** Redux for global state  
+- **Persistence:** Tasks saved in Local Storage and persist on refresh  
+- **Responsive Design:** Works on desktop and mobile  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Frontend:** React.js  
+- **UI Library:** Tailwind CSS  
+- **State Management:** Redux  
+- **Persistence:** Local Storage  
+- **Drag and Drop:** `react-beautiful-dnd`  
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project Structure
 
-### `npm run eject`
+creative-upaay-dashboard/
+│
+├── src/
+│ ├── components/ # Reusable components (TaskCard, Navbar, FilterBar)
+│ ├── pages/ # Page-level components (Dashboard.js, NotFound.js)
+│ ├── redux/ # Redux store, actions, reducers
+│ ├── utils/ # Helper functions
+│ ├── styles/ # Tailwind index.css and global styles
+│ ├── App.js
+│ └── index.js
+│
+├── tailwind.config.js
+├── postcss.config.js
+├── package.json
+└── README.md
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Setup & Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone the repository:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+git clone https://github.com/your-username/creative-upaay-dashboard.git
+cd creative-upaay-dashboard
 
-## Learn More
+2.Install dependencies:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+npm install
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+3. Start the development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+npm start
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The app will run on http://localhost:3000
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Usage
 
-### Advanced Configuration
+Add Task: Click the "Add Task" button in any column. Fill out the title, description, category, priority, and due date.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Edit Task: Click the "Edit" button on a task card. Update the fields and change the task status if needed.
 
-### Deployment
+Delete Task: Click the "Delete" button on a task card to remove it.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Move Task: Drag-and-drop tasks between columns or use the status dropdown while editing.
 
-### `npm run build` fails to minify
+Filter Tasks: Use the search box or dropdown filters to filter by category or priority.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+Deployment
+
+deployed this app using  Vercel.
+npm run build
+
+link: 
+
+Notes
+
+Redux state is persisted to Local Storage automatically.
+
+Tailwind CSS utility classes are used for styling.
+
+Optional drag-and-drop is implemented via react-beautiful-dnd.
+
+Ensure React version is compatible with dependencies (React 18+ recommended).

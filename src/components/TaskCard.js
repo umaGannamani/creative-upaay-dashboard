@@ -4,16 +4,32 @@ import { useDispatch } from "react-redux";
 export default function TaskCard({ task, provided, snapshot, onEdit }) {
   const dispatch = useDispatch();
 
+  // Delete task
   const handleDelete = () => {
     dispatch({ type: "DELETE_TASK", payload: task.id });
   };
 
+  // Change task status
   const handleStatusChange = (e) => {
     const newStatus = e.target.value;
     dispatch({
       type: "MOVE_TASK",
       payload: { id: task.id, status: newStatus },
     });
+  };
+
+  // Map priority to Tailwind colors
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "bg-red-500 text-white";
+      case "Medium":
+        return "bg-orange-400 text-white";
+      case "Low":
+        return "bg-yellow-300 text-black";
+      default:
+        return "bg-gray-400 text-white";
+    }
   };
 
   return (
@@ -27,9 +43,20 @@ export default function TaskCard({ task, provided, snapshot, onEdit }) {
     >
       <h3 className="font-bold text-md mb-1">{task.title}</h3>
       <p className="text-sm mb-1">{task.description}</p>
-      <p className="text-xs text-gray-500 mb-1">
-        Category: {task.category} | Priority: {task.priority}
-      </p>
+      
+      <div className="flex justify-between items-center mb-1">
+        <span className="text-xs text-gray-500">
+          Category: {task.category}
+        </span>
+        <span
+          className={`text-xs px-2 py-1 rounded ${getPriorityColor(
+            task.priority
+          )}`}
+        >
+          {task.priority}
+        </span>
+      </div>
+
       <p className="text-xs text-gray-500 mb-2">Due: {task.dueDate}</p>
 
       {/* Quick Status Dropdown */}

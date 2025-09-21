@@ -19,7 +19,7 @@ The app allows users to **add, edit, delete, move, and filter tasks** with optio
 
 ## Features
 
-- **Three Kanban Columns:** To Do, In Progress, Done  
+- **Three Kanban Columns:** To Do, On Progress, Done  
 - **Add Task:** Dynamic task title, description, category, priority, and due date  
 - **Edit Task:** Edit all task fields including task status  
 - **Delete Task:** Remove tasks from any column  

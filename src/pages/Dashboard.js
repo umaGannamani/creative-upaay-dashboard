@@ -8,7 +8,7 @@ export default function Dashboard() {
   const { tasks, filter } = useSelector((state) => state.tasksState);
   const dispatch = useDispatch();
 
-  const statuses = ["todo", "inprogress", "done"];
+  const statuses = ["todo", "onprogress", "done"];
 
   const emptyTask = {
     title: "",
@@ -83,7 +83,7 @@ export default function Dashboard() {
     switch (status) {
       case "todo":
         return "text-blue-600";
-      case "inprogress":
+      case "onprogress":
         return "text-yellow-600";
       case "done":
         return "text-green-600";
@@ -170,7 +170,7 @@ export default function Dashboard() {
             className="border p-1 mb-2 w-full"
           >
             <option value="todo">To Do</option>
-            <option value="inprogress">In Progress</option>
+            <option value="onprogress">On Progress</option>
             <option value="done">Done</option>
           </select>
           <button
@@ -206,7 +206,7 @@ export default function Dashboard() {
                       )}`}
                     >
                       {status === "todo" && "To Do"}
-                      {status === "inprogress" && "In Progress"}
+                      {status === "onprogress" && "On Progress"}
                       {status === "done" && "Done"}
                     </h2>
                     <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">

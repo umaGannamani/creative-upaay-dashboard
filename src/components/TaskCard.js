@@ -68,7 +68,7 @@ export default function TaskCard({ task, provided, snapshot, onEdit }) {
         className="border p-1 mb-3 w-full text-sm rounded"
       >
         <option value="todo">To Do</option>
-        <option value="inprogress">In Progress</option>
+        <option value="onprogress">On Progress</option>
         <option value="done">Done</option>
       </select>
 

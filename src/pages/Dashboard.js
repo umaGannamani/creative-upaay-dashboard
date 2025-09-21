@@ -1,21 +1,14 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import TaskCard from "../components/TaskCard";
 import FilterBar from "../components/FilterBar";
 
 export default function Dashboard() {
-  const statuses = ["todo", "onprogress", "done"];
+  const { tasks, filter } = useSelector((state) => state.tasksState);
+  const dispatch = useDispatch();
 
-  // Demo task only
-  const demoTask = {
-    id: 1,
-    title: "Demo Task",
-    description: "This is a demo task for presentation",
-    category: "Work",
-    priority: "Medium",
-    dueDate: new Date().toISOString().split("T")[0],
-    status: "todo",
-  };
+  const statuses = ["todo", "onprogress", "done"];
 
   const emptyTask = {
     title: "",
@@ -26,10 +19,9 @@ export default function Dashboard() {
     status: "todo",
   };
 
-  const [tasks, setTasks] = useState([demoTask]);
-  const [showForm, setShowForm] = useState(false);
   const [taskForm, setTaskForm] = useState(emptyTask);
   const [editTaskId, setEditTaskId] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   const openAddForm = () => {
     setTaskForm(emptyTask);
@@ -47,11 +39,15 @@ export default function Dashboard() {
     if (!taskForm.title) return;
 
     if (editTaskId) {
-      setTasks((prev) =>
-        prev.map((t) => (t.id === editTaskId ? { ...t, ...taskForm } : t))
-      );
+      dispatch({
+        type: "EDIT_TASK",
+        payload: { id: editTaskId, updatedTask: taskForm },
+      });
     } else {
-      setTasks((prev) => [...prev, { ...taskForm, id: Date.now() }]);
+      dispatch({
+        type: "ADD_TASK",
+        payload: { ...taskForm, id: Date.now() },
+      });
     }
 
     setTaskForm(emptyTask);
@@ -64,16 +60,25 @@ export default function Dashboard() {
     const { source, destination, draggableId } = result;
     if (source.droppableId !== destination.droppableId) {
       const taskId = parseInt(draggableId);
-      setTasks((prev) =>
-        prev.map((t) =>
-          t.id === taskId ? { ...t, status: destination.droppableId } : t
-        )
-      );
+      dispatch({
+        type: "MOVE_TASK",
+        payload: { id: taskId, status: destination.droppableId },
+      });
     }
   };
 
-  const filteredTasks = tasks; // No filter for demo
+  const filteredTasks = tasks.filter((t) => {
+    const searchText = String(filter.search || "");
+    const searchMatch = searchText
+      ? t.title.toLowerCase().includes(searchText.toLowerCase())
+      : true;
+    const categoryMatch = filter.category ? t.category === filter.category : true;
+    const priorityMatch = filter.priority ? t.priority === filter.priority : true;
+    const dueDateMatch = filter.dueDate ? t.dueDate === filter.dueDate : true;
+    return searchMatch && categoryMatch && priorityMatch && dueDateMatch;
+  });
 
+  // 🎨 Column colors like screenshot
   const getStatusColor = (status) => {
     switch (status) {
       case "todo":
@@ -87,12 +92,13 @@ export default function Dashboard() {
     }
   };
 
+  // Count tasks per section
   const getTaskCount = (status) =>
     filteredTasks.filter((t) => t.status === status).length;
 
   return (
     <div>
-      {/* Filter + Total Count */}
+      {/* 🔹 Filters (left) + Total count (right) */}
       <div className="flex justify-between items-center px-4 py-2">
         <FilterBar />
         <span className="text-sm font-semibold text-gray-600">
@@ -100,7 +106,6 @@ export default function Dashboard() {
         </span>
       </div>
 
-      {/* Add Task Button */}
       <div className="flex justify-end p-4">
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -110,7 +115,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* Task Form */}
+      {/* Universal Task Form */}
       {showForm && (
         <div className="p-4 bg-gray-100 m-4 rounded shadow">
           <h2 className="font-bold mb-2">
@@ -133,7 +138,9 @@ export default function Dashboard() {
           />
           <select
             value={taskForm.category}
-            onChange={(e) => setTaskForm({ ...taskForm, category: e.target.value })}
+            onChange={(e) =>
+              setTaskForm({ ...taskForm, category: e.target.value })
+            }
             className="border p-1 mb-2 w-full"
           >
             <option value="Work">Work</option>
@@ -142,7 +149,9 @@ export default function Dashboard() {
           </select>
           <select
             value={taskForm.priority}
-            onChange={(e) => setTaskForm({ ...taskForm, priority: e.target.value })}
+            onChange={(e) =>
+              setTaskForm({ ...taskForm, priority: e.target.value })
+            }
             className="border p-1 mb-2 w-full"
           >
             <option value="High">High</option>
@@ -223,7 +232,6 @@ export default function Dashboard() {
                         )}
                       </Draggable>
                     ))}
-
                   {provided.placeholder}
                 </div>
               )}

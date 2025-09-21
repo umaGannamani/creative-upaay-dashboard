@@ -19,19 +19,16 @@ export default function Dashboard() {
     status: "todo",
   };
 
-  // State for universal form
   const [taskForm, setTaskForm] = useState(emptyTask);
   const [editTaskId, setEditTaskId] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Open form for adding
   const openAddForm = () => {
     setTaskForm(emptyTask);
     setEditTaskId(null);
     setShowForm(true);
   };
 
-  // Open form for editing
   const openEditForm = (task) => {
     setTaskForm({ ...task });
     setEditTaskId(task.id);
@@ -42,13 +39,11 @@ export default function Dashboard() {
     if (!taskForm.title) return;
 
     if (editTaskId) {
-      // Edit task
       dispatch({
         type: "EDIT_TASK",
         payload: { id: editTaskId, updatedTask: taskForm },
       });
     } else {
-      // Add new task
       dispatch({
         type: "ADD_TASK",
         payload: { ...taskForm, id: Date.now() },
@@ -83,9 +78,33 @@ export default function Dashboard() {
     return searchMatch && categoryMatch && priorityMatch && dueDateMatch;
   });
 
+  // 🎨 Column colors like screenshot
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "todo":
+        return "text-blue-600";
+      case "inprogress":
+        return "text-yellow-600";
+      case "done":
+        return "text-green-600";
+      default:
+        return "text-gray-700";
+    }
+  };
+
+  // Count tasks per section
+  const getTaskCount = (status) =>
+    filteredTasks.filter((t) => t.status === status).length;
+
   return (
     <div>
-      <FilterBar />
+      {/* 🔹 Filters (left) + Total count (right) */}
+      <div className="flex justify-between items-center px-4 py-2">
+        <FilterBar />
+        <span className="text-sm font-semibold text-gray-600">
+          Total Tasks: {filteredTasks.length}
+        </span>
+      </div>
 
       <div className="flex justify-end p-4">
         <button
@@ -177,9 +196,23 @@ export default function Dashboard() {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="bg-gray-100 p-4 rounded-lg min-h-[400px]"
+                  className="bg-gray-50 p-4 rounded-lg min-h-[400px] shadow-sm"
                 >
-                  <h2 className="text-lg font-bold mb-3 capitalize">{status}</h2>
+                  {/* Heading + Count */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <h2
+                      className={`text-lg font-bold capitalize ${getStatusColor(
+                        status
+                      )}`}
+                    >
+                      {status === "todo" && "To Do"}
+                      {status === "inprogress" && "In Progress"}
+                      {status === "done" && "Done"}
+                    </h2>
+                    <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                      {getTaskCount(status)}
+                    </span>
+                  </div>
 
                   {filteredTasks
                     .filter((t) => t.status === status)
@@ -194,7 +227,7 @@ export default function Dashboard() {
                             task={task}
                             provided={provided}
                             snapshot={snapshot}
-                            onEdit={openEditForm} // <-- use universal form
+                            onEdit={openEditForm}
                           />
                         )}
                       </Draggable>

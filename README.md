@@ -101,7 +101,7 @@ Deployment
 deployed this app using  Vercel.
 npm run build
 
-link: 
+link: https://creative-upaay-dashboard-rouge.vercel.app/
 
 Notes
 
